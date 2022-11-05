@@ -35,7 +35,8 @@ def get_estimates(request):
                 to_return["cheaper_fees"] = []
                 for date in time_classified_deliveries:
                     tmp = {
-                            date: (response_data['fee']['amount'] * (1 + INTEREST)) /
+                            "date":date,
+                            "fee": (response_data['fee']['amount'] * (1 + INTEREST)) /
                                   (len(time_classified_deliveries[date]) + 1)
                            }
                     to_return["cheaper_fees"].append(tmp)
@@ -59,7 +60,8 @@ def delivery_list(request):
         if response.status_code == 201:
             data['lat'] = response.json()['dropoff']['location']['coordinates']['lat']
             data['lon'] = response.json()['dropoff']['location']['coordinates']['lon']
-            data['fee'] = response.json()['price']['amount']
+            if "fee" not in data:
+                data['fee'] = response.json()['price']['amount']
 
             serializer = DeliverySerializer(data=data)
             if serializer.is_valid():
