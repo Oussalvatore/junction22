@@ -24,7 +24,7 @@ def get_estimates(request):
                 for d in deliveries:
                     lat = d.lat
                     lon = d.lon
-                    distance = compute_distance((lat_d, lon_d), (lat, lon))
+                    distance = compute_distance((lon_d, lat_d), (lon, lat))
                     if distance <= DISTANCE_THRESHOLD:
                         if str(d.date) in time_classified_deliveries:
                             time_classified_deliveries[str(d.date)].append(d)

@@ -1,5 +1,5 @@
 import requests
-from math import sqrt
+from math import sqrt, radians, cos, sin, atan2
 from .parameters import *
 
 
@@ -75,5 +75,25 @@ def send_delivery_request(pickup_address , drop_off_address, drop_off_time):
     return response
 
 
-def compute_distance(p1, p2):
-    return sqrt((p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2)
+def compute_distance(Location1, Location2):
+    R = 6371e3
+
+    lat1 = Location1[1]
+
+    lat2 = Location2[1]
+
+    lon1 = Location1[0]
+
+    lon2 = Location2[0]
+
+    o1 = radians(lat1)
+    o2 = radians(lat2)
+
+    do = radians(lat2 - lat1)
+    dl = radians(lon2 - lon1)
+
+    a = sin(do / 2) * sin(do / 2) + cos(o1) * cos(o2) * sin(dl / 2) * sin(dl / 2)
+
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    return R * c
